@@ -10,13 +10,15 @@ public class Chebyschev implements Filter{
 	float E;
 	float Aws;
 	float Wp;
+	float Ws;
 	int gain;
 	
-	public Chebyschev(Pole poles[], float E, float Aws, float Wp, int gain) {
+	public Chebyschev(Pole poles[], float E, float Aws, float Wp, float Ws, int gain) {
 		this.poles = poles;
 		this.E = E;
 		this.Aws = Aws;
 		this.Wp = Wp;
+		this.Ws = Ws;
 		this.gain = gain;
 	}
 	
@@ -27,6 +29,7 @@ public class Chebyschev implements Filter{
 		float E = (float) Math.sqrt(Math.pow(10, (Amax/10)) - 1);
 		float Aws = 0;
 		float Wp = (float) (2*Math.PI*fp);
+		float Ws = (float) (2*Math.PI*fs);
 		float acosh = (float) arccosh(ratio);
 		
 		//Obtem a ordem do filtro
@@ -47,7 +50,7 @@ public class Chebyschev implements Filter{
 			float img  = (float) Math.cos(arg1) * cosh;
 			poles[k-1] = new Pole(real, img);
 		}
-		return new Chebyschev(poles, E, Aws, Wp, gain);
+		return new Chebyschev(poles, E, Aws, Wp, Ws, gain);
 	}
 	
 
@@ -72,7 +75,8 @@ public class Chebyschev implements Filter{
 		g2.drawString("E = "     + E, x, y);
 		g2.drawString("A(ws) = " + Aws + " dB", x, y+20);
 		g2.drawString("Wp = " 	 + Wp + " rad/s", x, y+40);
-		g2.drawString("Ordem = " + order(), x, y+60);
+		g2.drawString("Ws = " 	 + Ws + " rad/s", x, y+60);
+		g2.drawString("Ordem = " + order(), x, y+80);
 	}
 	
 	public void drawPoles(Graphics2D g2, int width, int height) {
@@ -111,7 +115,7 @@ public class Chebyschev implements Filter{
 		for(int i=0; i<N/2; i++) {
 			float real = poles[i].real;
 			float img  = poles[i].img;
-			System.out.printf("(S²+%.4fWpS+%.4fWp²)", 2*real, (real*real + img*img));
+			System.out.printf("(Sï¿½+%.4fWpS+%.4fWpï¿½)", 2*real, (real*real + img*img));
 		}
 	}*/
 	
